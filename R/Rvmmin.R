@@ -47,7 +47,8 @@ Rvmmin <- function( par, fn, gr=NULL, lower=NULL, upper=NULL, bdmsk=NULL, contro
 #
 #          '1' indicates that the iteration limit 'maxit' or the function
 #               evaluation limit mafeval have been reached.
-#          '2' indicates inadmissible parameters for function (bounds may be OK)
+#          '20' indicates inadmissible input parameters for function (bounds may be OK)
+#          '21' indicates inadmissible intermediate parameters for function
 #
 # message: A character string giving any additional information returned
 #          by the optimizer, or 'NULL'.
@@ -63,7 +64,7 @@ Rvmmin <- function( par, fn, gr=NULL, lower=NULL, upper=NULL, bdmsk=NULL, contro
      stop("unknown names in control: ", namc[!(namc %in% names(ctrl))])     
 
   ctrl[namc ] <- control     # 
-  M           <- ctrl$M         #
+#  M           <- ctrl$M      # not needed
   maxit    <- ctrl$maxit     #
   maxfeval <- ctrl$maxfeval  #
   maximize <- ctrl$maximize  # TRUE to maximize the function
@@ -116,7 +117,8 @@ Rvmmin <- function( par, fn, gr=NULL, lower=NULL, upper=NULL, bdmsk=NULL, contro
   myfn <- if (maximize) function(par, ...) -fn(par, ...)
                    else function(par, ...)  fn(par, ...)
 
-  mygr <- if (maximize && !grNULL) function(par, ...) -gr(par, ...)
+#  mygr <- if (maximize && !grNULL) function(par, ...) -gr(par, ...)
+   mygr <- if (maximize) function(par, ...) -gr(par, ...)
                     else function(par, ...)  gr(par, ...)
 
 
@@ -124,8 +126,10 @@ Rvmmin <- function( par, fn, gr=NULL, lower=NULL, upper=NULL, bdmsk=NULL, contro
   if (is.null(bdmsk)) {
        bdmsk<-rep(1,n)
   }
-  cat("bdmsk:")
-  print(bdmsk)
+  if (trace > 2) {
+     cat("bdmsk:")
+     print(bdmsk)
+  }
 # check if there are bounds
   if(is.null(lower) || ! any(is.finite(lower))) nolower=TRUE else nolower=FALSE
   if(is.null(upper) || ! any(is.finite(upper))) noupper=TRUE else noupper=FALSE
@@ -183,10 +187,12 @@ Rvmmin <- function( par, fn, gr=NULL, lower=NULL, upper=NULL, bdmsk=NULL, contro
   }
 ############## end bounds check #############
   f <- try(do.call("myfn", append(list(bvec), fargs )), silent=TRUE) # Compute the function.
-  if ( class(f) == "try-error") { 
+  if ( (class(f) == "try-error") | is.na(f) | is.null(f) | is.infinite(f)) { 
      msg<-"Initial point gives inadmissible function value"
-     cat(msg,"\n")
-     ans<-list(bvec, NA, c(ifn, 0), 0, 2, msg) # fixup message??
+     conv<-20
+     if(trace>0) cat(msg,"\n")
+     ans<-list(bvec, NA, c(ifn, 0), 0, conv, msg) # 
+     names(ans)<-c("par", "fvalue", "counts", "convergence", "message")
      return(ans)
   }
   if (trace>0) cat("Initial fn=",f,"\n")
@@ -298,10 +304,15 @@ Rvmmin <- function( par, fn, gr=NULL, lower=NULL, upper=NULL, bdmsk=NULL, contro
                keepgoing<-FALSE
                break
             }
-            if (is.na(f)) {
-                 cat("Current bvec:")
+            if (is.na(f) | is.null(f) | is.infinite(f)) {
+               if(trace>0){
+                 cat("Function is not calculable at bvec:")
                  print(bvec)
-		 stop("f is NA") 
+               }
+               msg="Function is not calculable at an intermediate point"
+               #  stop("f is NA") 
+               conv<-21
+               break
 	    }
             if (f < fmin) { # We have a lower point. Is it "low enough" i.e., acceptable
               accpoint <- ( f <= fmin + gradproj * steplength * acctol)
@@ -371,7 +382,7 @@ Rvmmin <- function( par, fn, gr=NULL, lower=NULL, upper=NULL, bdmsk=NULL, contro
   if (trace > 0) cat("Seem to be done VM\n")
   ans<-list(par, fmin, c(ifn, ig), conv, msg)
 ## ?? need to fix up message
-  names(ans)<-c("par", "value", "counts", "convergence", "message")
+  names(ans)<-c("par", "fvalue", "counts", "convergence", "message")
   return(ans)
 } ## end of Rvmmin
 
