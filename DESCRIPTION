@@ -2,8 +2,8 @@ Package: Rvmmin
 Type: Package
 Title: Variable metric nonlinear function minimization with bounds
         constraints
-Version: 2011-2.11
-Date: 2011-02-11
+Version: 2011-2.25
+Date: 2011-02-25
 Author: John C. Nash
 Maintainer: John C. Nash <nashjc@uottawa.ca>
 Description: Variable metric nonlinear function minimization with
@@ -11,8 +11,6 @@ Description: Variable metric nonlinear function minimization with
 Depends: numDeriv
 License: GPL (>= 2)
 LazyLoad: no
+Packaged: 2011-02-28 15:34:05 UTC; john
 Repository: CRAN
-Repository/R-Forge/Project: optimizer
-Repository/R-Forge/Revision: 408
-Date/Publication: 2011-02-23 19:37:52
-Packaged: 2011-02-12 21:42:45 UTC; rforge
+Date/Publication: 2011-03-01 07:31:45
