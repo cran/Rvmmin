@@ -1,0 +1,10 @@
+37f3ff255bf968adbbc2f3634c4a3cf3 *DESCRIPTION
+920e92ac9744a8e6dc7c700edac2e3c0 *NAMESPACE
+e3348803712ad0bd6100daf75f91f5ab *R/Rvmmin.R
+276902d24081e8d321ebf9b9c533e359 *R/optansout.R
+ee7736e6f1c5b3992362d0e5cd53b187 *demo/00Index
+b28c5e9c9d38c2f3f984d8b963c575c7 *demo/broydt_test.R
+2257558c342964f00e17acb74297397a *demo/cyq_test.R
+bbc3380ac36511726c88b3f45d9e6f40 *demo/genrose_test.R
+61ed33076a54f56c6ceece2449dd4ad5 *man/Rvmmin.Rd
+7e9172a2ef3bcf9322feb7725479a999 *man/optansout.Rd
