@@ -57,6 +57,9 @@ var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/<
 hljs.initHighlightingOnLoad();
 </script>
 
+<!-- MathJax scripts -->
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
 
 
 <style type="text/css">
@@ -217,12 +220,12 @@ for more difficult problems. </p>
 <p>Fletcher&#39;s variable metric method attempts to mimic Newton&#39;s 
 iteration for function minimization approximately.</p>
 
-<p>Newton&#39;s method starts with an original set of parameters x[0].
+<p>Newton&#39;s method starts with an original set of parameters \(x_0\).
 At a given iteraion, which could be the first, we want to solve</p>
 
-<p>x[k+1]  =  x[k]  -   H<sup>-1</sup> g</p>
+<p>\[x_{k+1}  =  x_{k}  -   H^{-1} g\]</p>
 
-<p>where H is the Hessian and g is the gradient at x[k]. </p>
+<p>where \(H\) is the Hessian and \(g\) is the gradient at \(x_k\). </p>
 
 <p>Newton&#39;s method is unattractive in general function minimization
 situations because </p>
@@ -231,15 +234,15 @@ situations because </p>
 <li><p>evaluating the Hessian is generally time consuming and error
 prone;</p></li>
 <li><p>solving the equation 
-     H delta = -g
-(which is much less computational effort than inverting H), 
+     \[H delta = -g\]
+(which is much less computational effort than inverting \(H\)), 
 is still a lot of work which needs to be carried out every
 iteration.</p></li>
 </ul>
 
 <p>While the base Newton algorithm is as given, generally we
 carry out some sort of line search along the search direction
-delta from the current iterate x[k]. Indeed, many otherwise
+delta from the current iterate \(x_k\). Indeed, many otherwise
 highly educated workers try to implement it without paying 
 attention to safeguarding the iterations and ensuring appropriate
 progress towards a minimum.</p>
@@ -248,8 +251,9 @@ progress towards a minimum.</p>
 
 <h3>Termination variation with control tolerances</h3>
 
-<p>We use Chebyquad n = 4 test with different controls <strong>eps</strong> and
-<strong>acctol</strong> and tabulate the results. </p>
+<p>Let us use the Chebyquad test problem in \(n\)=4 parameters with different controls <strong>eps</strong> and
+<strong>acctol</strong> and tabulate the results to explore how our results change with different values
+of these program control inputs. </p>
 
 <pre><code class="r">cyq.f &lt;- function (x) {
   rv&lt;-cyq.res(x)
@@ -364,12 +368,12 @@ xtabs(formula = gnorm ~ acctol + eps, data=resdf)
 
 <pre><code>##        eps
 ## acctol         1e-11        1e-09        1e-07        1e-05        0.001
-##   1e-06 7.809261e-30 7.809261e-30 7.809261e-30 3.645064e-22 1.089927e-13
-##   1e-05 7.809261e-30 7.809261e-30 7.809261e-30 3.645064e-22 1.089927e-13
-##   1e-04 7.809261e-30 7.809261e-30 7.809261e-30 3.645064e-22 1.089927e-13
-##   0.001 7.809261e-30 7.809261e-30 7.809261e-30 3.645064e-22 1.089927e-13
-##   0.01  7.809261e-30 7.809261e-30 7.809261e-30 3.645064e-22 1.089927e-13
-##   0.1   7.809261e-30 7.809261e-30 7.809261e-30 3.645064e-22 1.089927e-13
+##   1e-06 2.130888e-27 2.130888e-27 2.130888e-27 3.645064e-22 1.089927e-13
+##   1e-05 2.130888e-27 2.130888e-27 2.130888e-27 3.645064e-22 1.089927e-13
+##   1e-04 2.130888e-27 2.130888e-27 2.130888e-27 3.645064e-22 1.089927e-13
+##   0.001 2.130888e-27 2.130888e-27 2.130888e-27 3.645064e-22 1.089927e-13
+##   0.01  2.130888e-27 2.130888e-27 2.130888e-27 3.645064e-22 1.089927e-13
+##   0.1   2.130888e-27 2.130888e-27 2.130888e-27 3.645064e-22 1.089927e-13
 </code></pre>
 
 <pre><code class="r"># Display the number of function evaluations used for different tolerances
@@ -378,12 +382,12 @@ xtabs(formula = nf ~ acctol + eps, data=resdf)
 
 <pre><code>##        eps
 ## acctol  1e-11 1e-09 1e-07 1e-05 0.001
-##   1e-06    22    22    22    17    12
-##   1e-05    22    22    22    17    12
-##   1e-04    22    22    22    17    12
-##   0.001    22    22    22    17    12
-##   0.01     22    22    22    17    12
-##   0.1      22    22    22    17    12
+##   1e-06    20    20    20    17    12
+##   1e-05    20    20    20    17    12
+##   1e-04    20    20    20    17    12
+##   0.001    20    20    20    17    12
+##   0.01     20    20    20    17    12
+##   0.1      20    20    20    17    12
 </code></pre>
 
 <pre><code class="r"># Display the number of gradient evaluations used for different tolerances
@@ -400,12 +404,119 @@ xtabs(formula = ng ~ acctol + eps, data=resdf)
 ##   0.1      15    15    15    12     9
 </code></pre>
 
+<p>Here &ndash; and we caution that this is but a single instance of a single test problem &ndash; the 
+differences in results and level of effort to obtain them are regulated by the values
+of <code>eps</code> only. This control is used to judge the size of the gradient norm and the
+gradient projection on the search vector.</p>
+
 <h3>Problems of function scale</h3>
 
 <p>One of the more difficult aspects of termination decisions is that
 we need to decide when we have a &ldquo;nearly&rdquo; zero gradient. However, 
 this &ldquo;zero gradient&rdquo; is relative to the overall scale of the
-function and its parameters.</p>
+function. Let us see what happens when we consider solving a problem
+where the function scale is adjustable. Note that we multiply the
+constant sequence <code>yy</code> by <code>pi/4</code> to avoid integer values which may
+give results that are fortuitously better than may be normally found.</p>
+
+<pre><code class="r">require(Rvmmin)
+sq&lt;-function(x, exfs=1){
+  nn&lt;-length(x)
+  yy&lt;-(1:nn)*pi/4
+  f&lt;-(10^exfs)*sum((yy-x)^2)
+  f
+}
+sq.g &lt;- function(x, exfs=1){
+  nn&lt;-length(x)
+  yy&lt;-(1:nn)*pi/4
+  gg&lt;- 2*(x - yy)*(10^exfs)
+}
+require(Rvmmin)
+nn &lt;- 4
+xx0 &lt;- rep(pi, nn) # crude start
+
+# Now build a table of results for different values of eps and acc
+veps &lt;- c(1e-3, 1e-5, 1e-7, 1e-9, 1e-11)
+exfsi &lt;- 1:6
+resdf &lt;- data.frame(eps=NA, exfs=NA, nf=NA, ng=NA, fval=NA, gnorm=NA)
+for (eps in veps) {
+  for (exfs in exfsi) {
+    ans &lt;- Rvmminu(xx0, sq, sq.g, 
+                   control=list(eps=eps, trace=0), exfs=exfs)
+    gn &lt;- as.numeric(crossprod(sq.g(ans$par)))
+    resdf &lt;- rbind(resdf, 
+                   c(eps, exfs, ans$counts[1], ans$counts[2], ans$value, gn))
+  }
+}
+resdf &lt;- resdf[-1,]
+# Display the function value found for different tolerances
+xtabs(formula = fval ~ exfs + eps, data=resdf)
+</code></pre>
+
+<pre><code>##     eps
+## exfs        1e-11        1e-09        1e-07        1e-05        0.001
+##    1 6.125998e-29 6.125998e-29 6.125998e-29 2.001735e-28 2.001735e-28
+##    2 0.000000e+00 0.000000e+00 0.000000e+00 1.772768e-25 1.772768e-25
+##    3 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 1.210198e-22
+##    4 1.232595e-28 1.232595e-28 1.232595e-28 1.232595e-28 5.241000e-20
+##    5 4.930381e-27 4.930381e-27 4.930381e-27 4.930381e-27 4.930381e-27
+##    6 1.232595e-26 1.232595e-26 1.232595e-26 1.232595e-26 1.232595e-26
+</code></pre>
+
+<pre><code class="r"># Display the gradient norm found for different tolerances
+xtabs(formula = gnorm ~ exfs + eps, data=resdf)
+</code></pre>
+
+<pre><code>##     eps
+## exfs        1e-11        1e-09        1e-07        1e-05        0.001
+##    1 2.450399e-27 2.450399e-27 2.450399e-27 8.006938e-27 8.006938e-27
+##    2 0.000000e+00 0.000000e+00 0.000000e+00 7.091071e-25 7.091071e-25
+##    3 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 4.840792e-23
+##    4 4.930381e-30 4.930381e-30 4.930381e-30 4.930381e-30 2.096400e-21
+##    5 1.972152e-29 1.972152e-29 1.972152e-29 1.972152e-29 1.972152e-29
+##    6 4.930381e-30 4.930381e-30 4.930381e-30 4.930381e-30 4.930381e-30
+</code></pre>
+
+<pre><code class="r"># Display the number of function evaluations used for different tolerances
+xtabs(formula = nf ~ exfs + eps, data=resdf)
+</code></pre>
+
+<pre><code>##     eps
+## exfs 1e-11 1e-09 1e-07 1e-05 0.001
+##    1     9     9     9     5     5
+##    2    16    16    16     6     6
+##    3    22    22    22    22     8
+##    4    26    26    26    26     9
+##    5    30    30    30    30    30
+##    6    35    35    35    35    35
+</code></pre>
+
+<pre><code class="r"># Display the number of gradient evaluations used for different tolerances
+xtabs(formula = ng ~ exfs + eps, data=resdf)
+</code></pre>
+
+<pre><code>##     eps
+## exfs 1e-11 1e-09 1e-07 1e-05 0.001
+##    1     4     4     4     3     3
+##    2     7     7     7     3     3
+##    3     7     7     7     7     3
+##    4     7     7     7     7     3
+##    5     7     7     7     7     7
+##    6     7     7     7     7     7
+</code></pre>
+
+<p>The general tendency here is for the amount of work in terms of function 
+evaluations to rise with the function scale and with tighter (smaller) 
+test tolerances, while the quality of the solution is poorer with 
+larger scale and also larger (looser) tolerances. However, some exceptions
+can be seen, though the overall quality of solutions (function and gradient
+norm) is very good. Moreover, the number of gradient evaluations does not climb
+notably with the scale or inverse tolerance. </p>
+
+<h3>Problems of parameter scale</h3>
+
+<p>There are similar issues of parameter scaling. Let us look at very simple
+sum of squares function where we scale the parameters in a nasty way.</p>
 
 <pre><code class="r">ssq.f&lt;-function(x){
    nn&lt;-length(x)
@@ -420,7 +531,7 @@ ssq.g &lt;- function(x){
 }
 
 xy &lt;- c(1, 1/10, 1/100, 1/1000)
-# note: checked gradient using numDeriv
+# note: gradient was checked using numDeriv
 veps &lt;- c(1e-3, 1e-5, 1e-7, 1e-9, 1e-11)
 vacc &lt;- c(.1, .01, .001, .0001, .00001, .000001)
 resdf &lt;- data.frame(eps=NA, acctol=NA, nf=NA, ng=NA, fval=NA, gnorm=NA)
@@ -490,12 +601,18 @@ xtabs(formula = ng ~ acctol + eps, data=resdf)
 ##   0.1      56    56    55    53    51
 </code></pre>
 
+<p>The results above suggest that parameter scaling is not much of a problem. 
+Actually, these are the very best results I have found with any method for
+this problem, which is actually rather nasty. I suggest trying this problem
+on your favourite optimizer. Alternatively, use the package <code>optimr</code> and
+run the function <code>opm()</code> with <code>method=&quot;ALL&quot;</code>.</p>
+
 <h3>Weeds problem with random starts</h3>
 
 <p>This notorious problem (see @cnm79, page 120, @nlpor14, page 205, for details
-under the Hobbs Weeds problem) is small but generally difficult due
-to bad scaling and a near-singular Hessian in the original 
-parameterization.</p>
+under the heading <strong>Hobbs Weeds problem</strong>) is small but generally difficult due
+to the possibility of bad scaling of both function and parameters and a 
+near-singular Hessian in the original parameterization.</p>
 
 <p>The Fletcher variable metric method can solve this problem
 quite well, though default termination settings should be overridden.
@@ -505,7 +622,7 @@ settings for maxit in optim:BFGS, then the success rate
 drops to less than 2/3 of cases tried below.</p>
 
 <p>Below we use 100 &ldquo;random&rdquo; starting points for both Rvmmin and the
-optim:BFGS minimizers (which should, but are not quite, the same).</p>
+optim:BFGS minimizers (which should be, but are not quite, the same).</p>
 
 <pre><code class="r">## hobbstarts.R -- starting points for Hobbs problem 
 hobbs.f&lt;- function(x){ # # Hobbs weeds problem -- function
@@ -585,13 +702,7 @@ for (irun in 1:nrun) {
   goptim[irun] &lt;- ao$counts[2]
 
 }
-</code></pre>
-
-<pre><code>## Warning in Rvmminu(us, hobbs.f, hobbs.g, control = list(trace = 0)): Too
-## many gradient evaluations
-</code></pre>
-
-<pre><code class="r">cat(&quot;Rvmminu: number of successes=&quot;,nsuccR,&quot;  propn=&quot;,nsuccR/nrun,&quot;\n&quot;)
+cat(&quot;Rvmminu: number of successes=&quot;,nsuccR,&quot;  propn=&quot;,nsuccR/nrun,&quot;\n&quot;)
 </code></pre>
 
 <pre><code>## Rvmminu: number of successes= 100   propn= 1
@@ -607,13 +718,13 @@ for (irun in 1:nrun) {
 summary(fgc)
 </code></pre>
 
-<pre><code>##       fRvm           foptim            gRvm            goptim     
-##  Min.   : 41.0   Min.   :  58.0   Min.   : 26.00   Min.   : 16.0  
-##  1st Qu.:105.8   1st Qu.: 140.5   1st Qu.: 39.00   1st Qu.: 53.0  
-##  Median :155.5   Median : 184.0   Median : 53.00   Median : 68.5  
-##  Mean   :205.7   Mean   : 323.5   Mean   : 59.57   Mean   :131.2  
-##  3rd Qu.:258.0   3rd Qu.: 453.5   3rd Qu.: 66.00   3rd Qu.:178.8  
-##  Max.   :920.0   Max.   :1427.0   Max.   :507.00   Max.   :610.0
+<pre><code>##       fRvm            foptim            gRvm            goptim     
+##  Min.   : 36.00   Min.   :  58.0   Min.   : 21.00   Min.   : 16.0  
+##  1st Qu.: 58.50   1st Qu.: 140.5   1st Qu.: 31.75   1st Qu.: 53.0  
+##  Median : 74.50   Median : 184.0   Median : 40.00   Median : 68.5  
+##  Mean   : 87.66   Mean   : 323.5   Mean   : 41.31   Mean   :131.2  
+##  3rd Qu.: 93.00   3rd Qu.: 453.5   3rd Qu.: 48.00   3rd Qu.:178.8  
+##  Max.   :871.00   Max.   :1427.0   Max.   :101.00   Max.   :610.0
 </code></pre>
 
 <p>From this summary, it appears that Rvmmin, on average, uses fewer gradient and
@@ -645,13 +756,7 @@ for (irun in 1:nrun) {
   goptim[irun] &lt;- ao$counts[2]
 
 }
-</code></pre>
-
-<pre><code>## Warning in Rvmminu(us, hobbs.f, hobbs.g, control = list(trace = 0)): Too
-## many gradient evaluations
-</code></pre>
-
-<pre><code class="r">cat(&quot;Rvmminu: number of successes=&quot;,nsuccR,&quot;  propn=&quot;,nsuccR/nrun,&quot;\n&quot;)
+cat(&quot;Rvmminu: number of successes=&quot;,nsuccR,&quot;  propn=&quot;,nsuccR/nrun,&quot;\n&quot;)
 </code></pre>
 
 <pre><code>## Rvmminu: number of successes= 100   propn= 1
@@ -667,16 +772,16 @@ for (irun in 1:nrun) {
 summary(fgc)
 </code></pre>
 
-<pre><code>##       fRvm           foptim           gRvm            goptim      
-##  Min.   : 41.0   Min.   : 58.0   Min.   : 26.00   Min.   : 16.00  
-##  1st Qu.:105.8   1st Qu.:140.5   1st Qu.: 39.00   1st Qu.: 53.00  
-##  Median :155.5   Median :184.0   Median : 53.00   Median : 68.50  
-##  Mean   :205.7   Mean   :184.0   Mean   : 59.57   Mean   : 71.73  
-##  3rd Qu.:258.0   3rd Qu.:236.0   3rd Qu.: 66.00   3rd Qu.:100.00  
-##  Max.   :920.0   Max.   :425.0   Max.   :507.00   Max.   :100.00
+<pre><code>##       fRvm            foptim           gRvm            goptim      
+##  Min.   : 36.00   Min.   : 58.0   Min.   : 21.00   Min.   : 16.00  
+##  1st Qu.: 58.50   1st Qu.:140.5   1st Qu.: 31.75   1st Qu.: 53.00  
+##  Median : 74.50   Median :184.0   Median : 40.00   Median : 68.50  
+##  Mean   : 87.66   Mean   :184.0   Mean   : 41.31   Mean   : 71.73  
+##  3rd Qu.: 93.00   3rd Qu.:236.0   3rd Qu.: 48.00   3rd Qu.:100.00  
+##  Max.   :871.00   Max.   :425.0   Max.   :101.00   Max.   :100.00
 </code></pre>
 
-<h2>bounds and masks</h2>
+<h2>Bounds and masks</h2>
 
 <p>Let us make sure that Rvmminb is doing the right thing with 
 bounds and masks. (This is actually a test in the package.)</p>
@@ -700,6 +805,9 @@ ans &lt;- Rvmmin(xx, bt.f, bt.g, lower=lower, upper=upper, bdmsk=bdmsk)
 
 <pre><code>## Warning in Rvmmin(xx, bt.f, bt.g, lower = lower, upper = upper, bdmsk =
 ## bdmsk): Parameter out of bounds has been moved to nearest bound
+</code></pre>
+
+<pre><code>## trace= 0
 </code></pre>
 
 <pre><code class="r">ans
@@ -768,11 +876,13 @@ ans &lt;- Rvmmin(xx0, sq.f, sq.g, lower=-Inf, upper=Inf, bdmsk=bdmsk,
 ## admissible =  TRUE 
 ## maskadded =  FALSE 
 ## parchanged =  FALSE 
+## trace= 2 
 ## Bounds: nolower =  FALSE   noupper =  FALSE  bounds =  TRUE 
 ## Rvmminb -- J C Nash 2009-2015 - an R implementation of Alg 21
 ## Problem of size n= 3   Dot arguments:
 ## list()
 ## Initial fn= 5.909701 
+## ig= 1   gnorm= 4.861975   Reset Inv. Hessian approx at ilast =  1 
 ##   1   1   5.909701 
 ## Gradproj = -18.42587 
 ## reset steplength= 1 
@@ -820,12 +930,14 @@ ans &lt;- Rvmmin(xx0, sq.f, sq.g, lower=-Inf, upper=Inf, bdmsk=bdmsk,
 ## admissible =  TRUE 
 ## maskadded =  FALSE 
 ## parchanged =  FALSE 
+## trace= 2 
 ## Bounds: nolower =  FALSE   noupper =  FALSE  bounds =  TRUE 
 ## Rvmminb -- J C Nash 2009-2015 - an R implementation of Alg 21
 ## Problem of size n= 3   Dot arguments:
 ## list()
 ## WARNING: using gradient approximation &#39; grfwd &#39;
 ## Initial fn= 5.909701 
+## ig= 1   gnorm= 4.861976   Reset Inv. Hessian approx at ilast =  1 
 ##   1   1   5.909701 
 ## Gradproj = -18.42587 
 ## reset steplength= 1 
@@ -839,22 +951,6 @@ ans &lt;- Rvmmin(xx0, sq.f, sq.g, lower=-Inf, upper=Inf, bdmsk=bdmsk,
 ## reset steplength= 1 
 ## ig= 4   gnorm= 2.668644e-08     6   4   1.303234 
 ## Gradproj = -4.446061e-16 
-## reset steplength= 1 
-## *reset steplength= 0.2 
-## *reset steplength= 0.04 
-## *reset steplength= 0.008 
-## *reset steplength= 0.0016 
-## *reset steplength= 0.00032 
-## *reset steplength= 6.4e-05 
-## *reset steplength= 1.28e-05 
-## *reset steplength= 2.56e-06 
-## *reset steplength= 5.12e-07 
-## *reset steplength= 1.024e-07 
-## Unchanged in step redn 
-## No acceptable point
-## Reset to gradient search
-##   16   4   1.303234 
-## Gradproj = -7.121661e-16 
 ## reset steplength= 1 
 ## *reset steplength= 0.2 
 ## *reset steplength= 0.04 
@@ -883,7 +979,7 @@ ans &lt;- Rvmmin(xx0, sq.f, sq.g, lower=-Inf, upper=Inf, bdmsk=bdmsk,
 ## 
 ## $counts
 ## function gradient 
-##       26        4 
+##       16        4 
 ## 
 ## $convergence
 ## [1] 0
