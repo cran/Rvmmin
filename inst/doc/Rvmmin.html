@@ -718,13 +718,13 @@ cat(&quot;Rvmminu: number of successes=&quot;,nsuccR,&quot;  propn=&quot;,nsuccR
 summary(fgc)
 </code></pre>
 
-<pre><code>##       fRvm            foptim            gRvm            goptim     
-##  Min.   : 36.00   Min.   :  58.0   Min.   : 21.00   Min.   : 16.0  
-##  1st Qu.: 58.50   1st Qu.: 140.5   1st Qu.: 31.75   1st Qu.: 53.0  
-##  Median : 74.50   Median : 184.0   Median : 40.00   Median : 68.5  
-##  Mean   : 87.66   Mean   : 323.5   Mean   : 41.31   Mean   :131.2  
-##  3rd Qu.: 93.00   3rd Qu.: 453.5   3rd Qu.: 48.00   3rd Qu.:178.8  
-##  Max.   :871.00   Max.   :1427.0   Max.   :101.00   Max.   :610.0
+<pre><code>##       fRvm            foptim            gRvm           goptim     
+##  Min.   : 36.00   Min.   :  58.0   Min.   :20.00   Min.   : 16.0  
+##  1st Qu.: 58.50   1st Qu.: 140.5   1st Qu.:31.75   1st Qu.: 53.0  
+##  Median : 75.50   Median : 184.0   Median :40.00   Median : 68.5  
+##  Mean   : 88.22   Mean   : 323.7   Mean   :41.30   Mean   :131.2  
+##  3rd Qu.: 93.00   3rd Qu.: 457.2   3rd Qu.:48.00   3rd Qu.:178.8  
+##  Max.   :881.00   Max.   :1427.0   Max.   :99.00   Max.   :610.0
 </code></pre>
 
 <p>From this summary, it appears that Rvmmin, on average, uses fewer gradient and
@@ -772,13 +772,13 @@ cat(&quot;Rvmminu: number of successes=&quot;,nsuccR,&quot;  propn=&quot;,nsuccR
 summary(fgc)
 </code></pre>
 
-<pre><code>##       fRvm            foptim           gRvm            goptim      
-##  Min.   : 36.00   Min.   : 58.0   Min.   : 21.00   Min.   : 16.00  
-##  1st Qu.: 58.50   1st Qu.:140.5   1st Qu.: 31.75   1st Qu.: 53.00  
-##  Median : 74.50   Median :184.0   Median : 40.00   Median : 68.50  
-##  Mean   : 87.66   Mean   :184.0   Mean   : 41.31   Mean   : 71.73  
-##  3rd Qu.: 93.00   3rd Qu.:236.0   3rd Qu.: 48.00   3rd Qu.:100.00  
-##  Max.   :871.00   Max.   :425.0   Max.   :101.00   Max.   :100.00
+<pre><code>##       fRvm            foptim           gRvm           goptim      
+##  Min.   : 36.00   Min.   : 58.0   Min.   :20.00   Min.   : 16.00  
+##  1st Qu.: 58.50   1st Qu.:140.5   1st Qu.:31.75   1st Qu.: 53.00  
+##  Median : 75.50   Median :184.0   Median :40.00   Median : 68.50  
+##  Mean   : 88.22   Mean   :184.2   Mean   :41.30   Mean   : 71.73  
+##  3rd Qu.: 93.00   3rd Qu.:236.0   3rd Qu.:48.00   3rd Qu.:100.00  
+##  Max.   :881.00   Max.   :425.0   Max.   :99.00   Max.   :100.00
 </code></pre>
 
 <h2>Bounds and masks</h2>
@@ -803,8 +803,8 @@ xx &lt;- rep(0,5) # out of bounds
 ans &lt;- Rvmmin(xx, bt.f, bt.g, lower=lower, upper=upper, bdmsk=bdmsk)
 </code></pre>
 
-<pre><code>## Warning in Rvmmin(xx, bt.f, bt.g, lower = lower, upper = upper, bdmsk =
-## bdmsk): Parameter out of bounds has been moved to nearest bound
+<pre><code>## Warning in Rvmmin(xx, bt.f, bt.g, lower = lower, upper = upper, bdmsk = bdmsk):
+## Parameter out of bounds has been moved to nearest bound
 </code></pre>
 
 <pre><code>## trace= 0

@@ -1,17 +1,17 @@
-f7301e976a180ee851a28ab032cc72f4 *DESCRIPTION
+3d7d8a2f2b14c5e092269f64472ffe96 *DESCRIPTION
 c06b8f357c01ba7d6671f1bd659d498a *NAMESPACE
 a6229c11f2fe1c7c9c6ca0046a80ed38 *NEWS
 0eca4a359e1a999c2fb114c413e69b01 *R/Rvmmin.R
 c1b0bf0dcc500d3d221e87bc10f97900 *R/Rvmminb.R
 74d027f2a7b8950d5a7f343adb2ccd01 *R/Rvmminu.R
-8254f676928796e7b2e43746c5066593 *build/vignette.rds
+a4ff17001175a373fc5107e5f0be650f *build/vignette.rds
 ee7736e6f1c5b3992362d0e5cd53b187 *demo/00Index
 1dc6cc02a5334bc8562e7f47941ab155 *demo/broydt_test.R
 cd589e5c36781563fe21f6a2e15db12d *demo/cyq_test.R
 9d803a9d86ec11ced4555845af5c7f5d *demo/genrose_test.R
-8adf2df2ad4538fea10d70f097062a07 *inst/doc/Rvmmin.R
+fa2cf7254b3274fdc6c118a6dee821f3 *inst/doc/Rvmmin.R
 7195d3ce8a5302ecbb388f8152b863cc *inst/doc/Rvmmin.Rmd
-e7b9471869c58e128a6658778d1cfa78 *inst/doc/Rvmmin.pdf
+97233fc578279c04e4ca3dda946c8e20 *inst/doc/Rvmmin.html
 f5332d5c0c8f57e37e716af963bc5ff7 *man/Rvmmin.Rd
 8aa81711c34471ce4ae33684dee2b013 *man/Rvmminb.Rd
 5cc3e898456856ca1882bb4fba8c8b42 *man/Rvmminu.Rd
@@ -19,4 +19,3 @@ f5332d5c0c8f57e37e716af963bc5ff7 *man/Rvmmin.Rd
 8d0eead31925b32bb92f73d0d89345d8 *tests/groseRvmmin.R
 7195d3ce8a5302ecbb388f8152b863cc *vignettes/Rvmmin.Rmd
 e705b5b7ddb27362aa35c01eed60d547 *vignettes/Rvmmin.bib
-a6c6ff8f792107fc22867c72eaf6b6a8 *vignettes/Rvmmin.html
